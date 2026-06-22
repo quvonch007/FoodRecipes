@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Bosh sahifa{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a class="navbar-brand fw-bold" href="/">🍽 FoodRecipes</a>
+    <div class="ms-auto d-flex gap-2 align-items-center">
+        {% if request.user.is_authenticated %}
+            <span class="text-white">{{ request.user.username }}</span>
+            <a href="/logout/" class="btn btn-outline-light btn-sm">Chiqish</a>
+        {% else %}
+            <a href="/login/" class="btn btn-outline-light btn-sm">Kirish</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container mt-5 text-center">
+    {% if request.user.is_authenticated %}
+        <h3>Xush kelibsiz, {{ request.user.username }}! 👋</h3>
+    {% else %}
+        <h3>Siz kirishingiz kerak</h3>
+        <a href="/login/" class="btn btn-primary mt-3">Kirish</a>
+    {% endif %}
+</div>
+{% endblock %}

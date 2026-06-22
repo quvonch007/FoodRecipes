@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Google orqali ro'yxatdan o'tish{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="card shadow p-4" style="width: 400px;">
+        
+        <h4 class="text-center mb-4 fw-bold">🍽 FoodRecipes</h4>
+        <p class="text-center text-muted mb-3">Google hisobingiz bilan davom eting</p>
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <input type="email" name="email" value="{{ form.email.value|default:'' }}"
+                       class="form-control" placeholder="Email">
+            </div>
+            <div class="mb-3">
+                <input type="text" name="username" value="{{ form.username.value|default:'' }}"
+                       class="form-control" placeholder="Username">
+            </div>
+            <button type="submit" class="btn btn-danger w-100">Davom etish</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
