@@ -1,26 +1,173 @@
 {% extends 'base.html' %}
 
-{% block title %}Bosh sahifa{% endblock %}
+{% block title %}🍕 Bosh sahifa{% endblock %}
 
 {% block content %}
-<nav class="navbar navbar-dark bg-dark px-4">
-    <a class="navbar-brand fw-bold" href="/">🍽 FoodRecipes</a>
-    <div class="ms-auto d-flex gap-2 align-items-center">
-        {% if request.user.is_authenticated %}
-            <span class="text-white">{{ request.user.username }}</span>
-            <a href="/logout/" class="btn btn-outline-light btn-sm">Chiqish</a>
-        {% else %}
-            <a href="/login/" class="btn btn-outline-light btn-sm">Kirish</a>
-        {% endif %}
-    </div>
-</nav>
+<style>
+    /* Slider konteyneri */
+    .bg-slider-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        overflow: hidden;
+    }
 
-<div class="container mt-5 text-center">
-    {% if request.user.is_authenticated %}
-        <h3>Xush kelibsiz, {{ request.user.username }}! 👋</h3>
-    {% else %}
-        <h3>Siz kirishingiz kerak</h3>
-        <a href="/login/" class="btn btn-primary mt-3">Kirish</a>
-    {% endif %}
+    /* TO'G'RILANDI: Qoraytirish darajasi kamaytirildi, sahifa ancha yorqinroq bo'ldi */
+    .bg-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55));
+        z-index: 1;
+    }
+
+    /* Rasmlarning umumiy stillari */
+    .bg-slider-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        animation: imageFade 30s infinite ease-in-out;
+    }
+
+    /* Har bir rasm uchun animatsiya kechikishi */
+    .bg-slider-container img:nth-child(1) { animation-delay: 0s; }
+    .bg-slider-container img:nth-child(2) { animation-delay: 6s; }
+    .bg-slider-container img:nth-child(3) { animation-delay: 12s; }
+    .bg-slider-container img:nth-child(4) { animation-delay: 18s; }
+    .bg-slider-container img:nth-child(5) { animation-delay: 24s; }
+
+    /* Silliq almashish animatsiyasi */
+    @keyframes imageFade {
+        0% { opacity: 0; }
+        4% { opacity: 1; }     
+        20% { opacity: 1; }    
+        24% { opacity: 0; }    
+        100% { opacity: 0; }
+    }
+
+    /* TO'G'RILANDI: Body to'liq balandlikni hisoblaydi va footerni pastga itaradi */
+    body {
+        color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: #111 !important;
+    }
+
+    /* TO'G'RILANDI: kontent qismi footerdan tashqari barcha joyni egallaydi */
+    .main-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navbar {
+        background-color: rgba(33, 37, 41, 0.85) !important;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    /* TO'G'RILANDI: Kartochka foni biroz shaffofroq qilindi, matnlar rasm fonida ajralib turadi */
+    .welcome-card {
+        background: rgba(15, 15, 15, 0.75);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 22px;
+        padding: 42px 36px;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+        max-width: 520px;
+        margin: 100px auto 0 auto;
+    }
+
+    .welcome-card h3,
+    .welcome-card p {
+        color: #f8f9fa;
+    }
+
+    .welcome-card .btn {
+        min-width: 170px;
+        font-size: 1rem;
+        background-color: #ffc107;
+        color: #111;
+        border-color: transparent;
+    }
+
+    .welcome-card .btn:hover {
+        background-color: #ffca2c;
+        color: #111;
+    }
+
+    /* TO'G'RILANDI: Footer har doim brauzerning eng pastki qismida yopishib turadi */
+    footer {
+        padding: 18px 0;
+        background: rgba(0, 0, 0, 0.8);
+        color: #d0d0d0;
+        backdrop-filter: blur(6px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        width: 100%;
+    }
+
+    footer p {
+        margin: 0;
+        font-size: 0.88rem;
+    }
+
+    footer span {
+        color: #f1f1f1;
+        font-weight: 600;
+    }
+</style>
+
+<!-- Orqa fonda haqiqiy rasmlar va qoraytirish qatlami -->
+<div class="bg-slider-container">
+    <div class="bg-overlay"></div>
+    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1350&q=80" alt="Food 1">
+    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1350&q=80" alt="Food 2">
+    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1350&q=80" alt="Food 3">
+    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1350&q=80" alt="Food 4">
+    <img src="https://images.unsplash.com/photo-1512058564366-c9e9f5c1e024?auto=format&fit=crop&w=1350&q=80" alt="Food 5">
+</div> <!-- TO'G'RILANDI: Slider divi shu yerda to'g'ri yopildi -->
+
+<div class="main-wrapper">
+    <!-- Navbar qismi -->
+    <nav class="navbar navbar-dark px-4 py-3">
+        <a class="navbar-brand fw-bold fs-4" href="/">👨‍🍳 🍽 FoodRecipes</a>
+        <div class="ms-auto d-flex gap-3 align-items-center">
+            {% if request.user.is_authenticated %}
+                <span class="text-white fw-semibold">👤 {{ request.user.username }}</span>
+                <a href="/logout/" class="btn btn-outline-danger btn-sm px-3">Chiqish</a>
+            {% else %}
+                <a href="/login/" class="btn btn-outline-light btn-sm px-3">Kirish</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Asosiy kontent qismi -->
+    <div class="container text-center flex-1">
+        <div class="welcome-card">
+            {% if request.user.is_authenticated %}
+                <h3 class="fw-bold mb-3">Xush kelibsiz, {{ request.user.username }}! 👋</h3>
+                <p class="text-white-50">Bugun qanday ajoyib retsept tayyorlaymiz?</p>
+            {% else %}
+                <h3 class="fw-bold mb-3">Siz tizimga kirishingiz kerak 🔒</h3>
+                <p class="text-white-50 mb-4">Loyiha retseptlaridan to'liq foydalanish uchun profilingizga kiring.</p>
+                <a href="/login/" class="btn btn-warning btn-lg px-5 fw-bold shadow">Kirish</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
+
+<!-- Eng tagidagi mualliflar qismi (Brauzer tubiga tushirildi) -->
+<footer class="text-center">
+    <p class="m-0">Loyiha mualliflari: <span>Soyibjon & Quvonchbek</span></p>
+</footer>
 {% endblock %}
